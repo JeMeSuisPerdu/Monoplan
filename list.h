@@ -4,7 +4,6 @@ typedef struct node {
 }node_t;
 
 
-
 void list_create (void);
 void list_set_data (node_t* node, void* data); 
 node_t list_next (node_t* node);
