@@ -47,12 +47,32 @@ node_t* list_append (node_t* head, void* data) {
     return head;
 }
 
+void list_affiche (node_t* head) {
+    node_t* node = head;
+
+    while (node->next != NULL) {
+        printf("%d\n", *(int*)node->data);
+        node = list_next(node);
+    }
+    printf("%d\n", *(int*)node->data);
+}
+
 node_t* list_remove (node_t* head, void* data) {
     node_t* node = head;
 
+    // compare des adresses donc doit être le même objet pour marcher
     while (node->data != data) {
         node = list_next(node);
     }
+
+    // compare les valeurs mais nécéssite des types précis
+    /*while (*(int*)node->data != *(int*)data) {
+        node = list_next(node);
+    }*/
+
+    // TODO
+
+    return head;
 }
 
 node_t* list_headRemove (node_t* head) {
