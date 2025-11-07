@@ -1,13 +1,12 @@
 #include "list.h"
 
 void list_create (void){
-
-
+    node_t n;
 }
 
 void list_set_data (node_t* node, void* data){
-
-
+    node->data = data;
+    node->next = node;
 }
 node_t list_next (node_t* node){
 
