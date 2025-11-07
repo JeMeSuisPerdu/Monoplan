@@ -1,17 +1,18 @@
 #include "list.h"
+#include <stdio.h>
 
 node_t* list_create (void){
-    node_t n;
-    return &n;
+    node_t* n;
+    n->data = NULL;
+    return n;
 }
 
 void* list_get_data (const node_t* node){
-
+    return node->data;
 }
 
 void list_set_data (node_t* node, void* data){
     node->data = data;
-    node->next = node;
 }
 
 node_t* list_next (node_t* node){
