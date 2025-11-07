@@ -1,3 +1,6 @@
+#ifndef LIST
+#define LIST
+
 typedef struct node {
     void* data;
     struct node* next;
@@ -11,3 +14,5 @@ node_t list_insert (node_t* head, void* data);
 node_t list_append (node_t*head, void* data);
 node_t list_remove (node_t* head, void* data); 
 void list_destroy (node_t* head);
+
+#endif

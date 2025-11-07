@@ -1,2 +1,2 @@
 # Monoplan
-aaaa
+pour merge les branches : git config pull.rebase false
