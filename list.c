@@ -24,18 +24,35 @@ node_t* list_next (node_t* node) {
 }
 
 node_t* list_insert (node_t* head, void* data) {
+    node_t* node = malloc(sizeof(node_t));
 
+    node->data = data;
+    node->next = head;
 
+    return node;
 }
 
-node_t* list_append (node_t*head, void* data) {
+node_t* list_append (node_t* head, void* data) {
+    node_t* node = head;
 
-    
+    while (node->next != NULL) {
+        node = list_next(node);
+    }
+
+    node_t* lastNode = malloc(sizeof(node_t));
+
+    node->next = lastNode;
+    lastNode->data = data;
+
+    return head;
 }
 
 node_t* list_remove (node_t* head, void* data) {
+    node_t* node = head;
 
-
+    while (node->data != data) {
+        node = list_next(node);
+    }
 }
 
 node_t* list_headRemove (node_t* head) {

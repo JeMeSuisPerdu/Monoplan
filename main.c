@@ -8,9 +8,8 @@ int main()
     int a = 25;
     int *p = &a;
     list_set_data(list, p);
-    printf("Adresse du noeud : %p\n", (void*)list);
-    printf("Adresse stockée dans data : %p\n", list->data);
-    printf("Valeur pointée : %d\n", *(int*)list->data);
+    printf("Adresse stockée dans data : %p\n", list_get_data(list));
+    printf("Valeur pointée : %d\n", *(int*)list_get_data(list));
     free(list);
     return 0;
 }
