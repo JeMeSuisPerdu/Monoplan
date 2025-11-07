@@ -15,8 +15,8 @@ int main()
     list_set_data(list, p);
     list = list_append(list, pb);
     list = list_insert(list, pc);
-    list_affiche(list);
-    list = list_remove(list, p);
-    free(list);
+    list_affiche_int(list);
+
+    list_destroy(list);
     return 0;
 }
