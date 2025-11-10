@@ -1,3 +1,5 @@
+// DUO : ANIS LAFRAD  && GABRIEL GASNIER
+
 #ifndef LOG_H
 #define LOG_H
 

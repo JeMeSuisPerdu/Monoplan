@@ -39,11 +39,11 @@ my_stack_t * stack_create(int nbMaxElement, int elementSize) {
 /* ----------------------------------------------------
  * Destruction d'une pile LIFO
  * ----------------------------------------------------
- * stack		: pile à detruire
+ * stack		: pile ï¿½ detruire
  * ----------------------------------------------------
  * retourne un pointeur de pile, ou NULL en cas d'erreur
  * ----------------------------------------------------
- */
+*/
 void stack_remove(my_stack_t * stack) {
 	free(stack->value);
 	free(stack);

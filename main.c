@@ -1,3 +1,4 @@
+// DUO : ANIS LAFRAD  && GABRIEL GASNIER
 #include <stdio.h>
 #include "mod_list/list.h"
 #include "log/log.h"
@@ -32,5 +33,12 @@ int main()
     list_destroy(list);
     TEST("--------------- FIN DES TESTS ---------------\n");
 
+    /*
+     --------------------------------------------------------------------------
+                            Test de 
+    --------------------------------------------------------------------------
+    */
+
+    
     return 0;
 }

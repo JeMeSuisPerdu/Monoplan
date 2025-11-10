@@ -1,3 +1,4 @@
+// DUO : ANIS LAFRAD  && GABRIEL GASNIER
 #include "list.h"
 #include "../log/log.h"
 #include <stdio.h>
@@ -103,7 +104,6 @@ void list_affiche_int (node_t* head) {
         node_iterator = node_iterator->next;
         compteur++;
     }
-    
 }
 
 node_t* list_remove (node_t* head, void* data) {

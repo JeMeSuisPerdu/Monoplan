@@ -1,3 +1,5 @@
+// DUO : ANIS LAFRAD  && GABRIEL GASNIER
+
 #ifndef LIST
 #define LIST
 
