@@ -1,3 +1,8 @@
+/** 
+ * @headerfile list.h
+ * @brief Déclaration des fonctions de manipulation de listes chaînées et de la structure d'un noeud
+ */
+
 #ifndef LIST
 #define LIST
 
