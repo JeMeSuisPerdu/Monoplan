@@ -21,8 +21,8 @@ typedef struct {
 
 extern s_operation operations[]; // toutes les operations dispo
 
-void initialisation_sheet(int lines, int cols);
-s_cell * get_or_create_cell(int line, int col);
+void initialisation_sheet(int cols,int lines);
+s_cell * get_or_create_cell(int col, int line);
 void evaluateCell(s_cell * cell);
 void analyseCell(s_cell * cell);
 void operator_add(my_stack_t* stack);

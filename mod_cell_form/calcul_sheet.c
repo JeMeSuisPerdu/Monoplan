@@ -22,7 +22,7 @@ s_operation operations[] = {
 };
 
 // UTILE POUR init matrice de cellules dans main
-void initialisation_sheet(int lines, int cols){
+void initialisation_sheet(int cols,int lines){
     global_sheet.lines = lines;
     global_sheet.cols = cols;
 
@@ -36,7 +36,7 @@ void initialisation_sheet(int lines, int cols){
     }
 }
 
-s_cell * get_or_create_cell(int line, int col){
+s_cell * get_or_create_cell(int col,int line){
     if(line<0 || line >= global_sheet.lines || col <0 || col >= global_sheet.cols){
         LOG("Erreur : Indices de cellule hors limites (%d, %d)", line, col);
         return NULL;
@@ -108,7 +108,7 @@ void analyseCell(s_cell * cell){
             
             s_token reference_token;
             reference_token.type = REF;
-            reference_token.value.ref = get_or_create_cell(line, colonne);
+            reference_token.value.ref = get_or_create_cell(colonne, line);
 
             cell->tokens[cell->token_count] = reference_token;
             cell->token_count++;
