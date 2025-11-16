@@ -13,7 +13,7 @@
  */
 int main() {
     
-    LOG("\n------------------------------ DEBUTS DES TEST DU JALON 2 ------------------------------\n");
+    LOG("------------------------------ DEBUTS DES TEST DU JALON 2 ------------------------------\n");
 
     // initialise la feuille de calcul
     initialisation_sheet(10, 10);
@@ -23,10 +23,10 @@ int main() {
     //-----------------------------   TEST 1 (calcul nombre)   -------------------------------
     // ---------------------------------------------------------------------------------------
 
-    LOG("\n---------------------- TEST 1: Calcul avec NPI de nombres ----------------------\n");
+    LOG("---------------------- TEST 1: Calcul avec NPI de nombres ----------------------\n");
     // crée la cellule A1 (indice 0, 0)
     s_cell* cell_A1 = get_or_create_cell(0, 0);
-    // alloue et copie la formule NPI
+    // copie la formule NPI + stock dans struct cell
     cell_A1->content = malloc(10 * sizeof(char));
     strcpy(cell_A1->content, "=10 5 +");
     LOG("Contenu de A1: %s\n", cell_A1->content);
@@ -46,13 +46,13 @@ int main() {
     //----------------------------- TEST 2 (calcul avec référence inconnue)---------------------------
     // -----------------------------------------------------------------------------------------------
     
-    LOG("\n---------------- TEST 2: Calcul avec référence inconnu (débordement de limites)---------------\n");
+    LOG("---------------- TEST 2: Calcul avec référence (opérateur * et -) ---------------\n");
     // crée la cellule A2 (indice 1, 0)
     s_cell* cell_A2 = get_or_create_cell(0, 1);
     
-    // ref vers A1, puis nb 2, puis multiplication
+    // ref vers A1(vaut 15.0), puis nb 2, puis multiplication, puis nb 1, puis soustraction
     cell_A2->content = malloc(10 * sizeof(char));
-    strcpy(cell_A2->content, "=A1 2 *");
+    strcpy(cell_A2->content, "=A1 2 1 * -");
     
     LOG("Contenu de A2: %s\n", cell_A2->content);
 
@@ -64,17 +64,47 @@ int main() {
     LOG("Évaluation...\n");
     
     LOG("RÉSULTAT Test 2 (A2): %.2f\n", cell_A2->value);
-    if (cell_A2->value == 0.0) {
-        LOG(">>> SUCCÈS (Attendu: 0.0 car cellule en dehors des limites) \n");
+    if (cell_A2->value == 29.0) {
+        LOG(">>> SUCCÈS (Attendu: 29.0 ) \n");
     } else {
-        LOG(">>> ÉCHEC (Attendu: 0.0 car cellule en dehors des limites)\n");
+        LOG(">>> ÉCHEC (Attendu: 29.0 )\n");
+    }
+
+    // --------------------------------------------------------------------------------------------
+    //----------------------------- TEST 3 (calcul avec tous les opérateurs) ---------------------
+    // --------------------------------------------------------------------------------------------
+
+    LOG("---------------------- TEST 3: Calcul NPI avec tous les opérateurs -----------------------\n");
+    // crée la cellule B1 (indice 0, 1)
+    s_cell* cell_B1 = get_or_create_cell(1, 0);
+    
+    // etape 1: 20 5 /  = 4
+    // etape 2: 4 2 %   = 0
+    cell_B1->content = malloc(15 * sizeof(char));
+    strcpy(cell_B1->content, "=20 5 / 2 % 1 2 + -"); 
+    
+    LOG("Contenu de B1: %s\n", cell_B1->content);
+
+
+    analyseCell(cell_B1);
+    LOG("Analyse... %d tokens trouvés.\n",cell_B1->token_count);
+
+    evaluateCell(cell_B1);
+    LOG("Évaluation...\n");
+    
+    // validation
+    LOG("RÉSULTAT Test 3 (B1): %.2f\n", cell_B1->value);
+    if (cell_B1->value == -3.0) {
+        LOG(">>> SUCCÈS (Attendu: -3.0)\n");
+    } else {
+        LOG(">>> ÉCHEC (Attendu: -3.0)\n");
     }
 
     // -----------------------------------------------------------------------------------------------
     //----------------------------- TEST 4 (calcul avec référence inconnue)---------------------------
     // -----------------------------------------------------------------------------------------------
     
-    LOG("\n---------------- TEST 4: Calcul avec référence inconnue (débordement de limites)---------------\n");
+    LOG("---------------- TEST 4: Calcul avec référence inconnue (débordement de limites)---------------\n");
     // crée la cellule A4 (indice 1, 0)
     s_cell* cell_A4 = get_or_create_cell(0, 3);
     
@@ -98,35 +128,9 @@ int main() {
         LOG(">>> ÉCHEC (Attendu: 0.0 car cellule en dehors des limites)\n");
     }
 
-    // --------------------------------------------------------------------------------------------
-    //----------------------------- TEST 3 (calcul avec plusieurs opérateurs) ---------------------
-    // --------------------------------------------------------------------------------------------
-
-    LOG("\n---------------------- TEST 3: Calcul NPI avec plusieurs opérateurs -----------------------\n");
-    // crée la cellule B1 (indice 0, 1)
-    s_cell* cell_B1 = get_or_create_cell(1, 0);
-    
-    // etape 1: 20 5 /  = 4
-    // etape 2: 4 2 %   = 0
-    cell_B1->content = malloc(15 * sizeof(char));
-    strcpy(cell_B1->content, "=20 5 / 2 %"); 
-    
-    LOG("Contenu de B1: %s\n", cell_B1->content);
-
-
-    analyseCell(cell_B1);
-    LOG("Analyse... %d tokens trouvés.\n",cell_B1->token_count);
-
-    evaluateCell(cell_B1);
-    LOG("Évaluation...\n");
-    
-    // validation
-    LOG("RÉSULTAT Test 3 (B1): %.2f\n", cell_B1->value);
-    if (cell_B1->value == 0.0) {
-        LOG(">>> SUCCÈS (Attendu: 0.0)\n");
-    } else {
-        LOG(">>> ÉCHEC (Attendu: 0.0)\n");
-    }
+    // ---------------------------------------------------------------------------------------
+    //-----------------------------   FIN DES TESTS   ----------------------------------------
+    // ---------------------------------------------------------------------------------------
 
     // libérer les chaine de caractère, les tokens et les cellules allouées
     free(cell_A1->content);
@@ -140,11 +144,11 @@ int main() {
     free(cell_B1->content);
     free(cell_B1->tokens);
     free(cell_B1);
-
+    LOG("------------------------------ LIBERATION DE LA MEMOIRE --------------------------------\n");
     LOG("Contenu des cellules A1,A2,B1, libérés avec succès.");
     LOG("Tokens des cellules A1,A2,B1, libérés avec succès.");
     LOG("Cellules A1,A2,B1, libérés avec succès.");
-
-    printf("\n------------------------- TESTS FINIS -------------------------\n");
+    LOG("---------------------------------------------------------------\n");
+    LOG("------------------------- TESTS FINIS -------------------------\n");
     return 0;
 }
