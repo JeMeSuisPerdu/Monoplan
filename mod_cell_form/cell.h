@@ -47,8 +47,6 @@ typedef struct cell {
     int dependant_cells_count; /** Nombre de cellules dépendantes */
 } s_cell ;
 
-// les fonctions qui utilisent la var globale
-void analyseCell(s_cell * cell);
-void evaluateCell(s_cell * cell);
+
 
 #endif

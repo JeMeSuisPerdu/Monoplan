@@ -37,6 +37,11 @@ void initialisation_sheet(int lines, int cols){
 }
 
 s_cell * get_or_create_cell(int line, int col){
+    if(line<0 || line >= global_sheet.lines || col <0 || col >= global_sheet.cols){
+        LOG("Erreur : Indices de cellule hors limites (%d, %d)", line, col);
+        return NULL;
+    }
+
     if(global_sheet.cells[line][col] == NULL)
     {
         s_cell* new_cell = malloc(sizeof(s_cell));
@@ -148,13 +153,21 @@ void evaluateCell(s_cell * cell){
             STACK_PUSH(eval_stack, cell->tokens[i].value.cst, double);
             LOG("Token valeur empilée: %.2f", cell->tokens[i].value.cst);
         } else if(cell->tokens[i].type == REF){
-            evaluateCell(cell->tokens[i].value.ref); // évaluer la cell référencé avant d'utiliser sa valeur
-            STACK_PUSH(eval_stack, cell->tokens[i].value.ref->value, double);
-            LOG("Token référence empilée: %.2f", cell->tokens[i].value.ref->value);
+            // DANS LE CAS OU C'EST UNE REF INVALIDE 
+            s_cell * ref_cell = cell->tokens[i].value.ref;
+            if(ref_cell == NULL){
+                LOG("Référence de cellule invalide rencontrée lors de l'évaluation");
+                STACK_PUSH(eval_stack, 0.0, double);
+            }else{
+                //CAS OU LA REF EST PAS EN DEHORS DES LIMITES DE LA FEUILLE DE CALCUL
+                evaluateCell(ref_cell); // évaluer la cell référencé avant d'utiliser sa valeur
+                STACK_PUSH(eval_stack, ref_cell->value, double);
+                LOG("Token référence empilée: %.2f", ref_cell->value);
+            }          
         } else if(cell->tokens[i].type == OPERATOR){
             // appel la fonction de l'opérateur avec la pile
             cell->tokens[i].value.operator(eval_stack);
-            LOG("Opérateur appliqué");
+            LOG("Opérateur appliqué avec succès !!!");
         }
     }
     STACK_POP2(eval_stack, cell->value, double);

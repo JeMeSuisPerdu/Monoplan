@@ -49,7 +49,7 @@ int main() {
     
     // ref vers A1, puis nb 2, puis multiplication
     cell_A2->content = malloc(10 * sizeof(char));
-    strcpy(cell_A2->content, "=A1 2 *");
+    strcpy(cell_A2->content, "=A100 2 *");
     
     printf("Contenu de A2: %s\n", cell_A2->content);
 
