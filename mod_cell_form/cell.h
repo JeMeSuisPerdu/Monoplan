@@ -9,6 +9,8 @@
 #include "../stack/stack.h"
 #include <stdlib.h>
 
+typedef struct cell s_cell;
+
 /** 
  * @struct token
  * @brief Représente un jeton d'une cellule
@@ -40,9 +42,9 @@ typedef struct cell {
     char* content; /**  */
     double value; /**  */
     s_token* tokens; /** Tableau alloué dynamiquement ; Jetons créés à partir de l'analyse du contenu */
-    size_t token_count; /** Nombre de jetons dans le tableau */
+    int token_count; /** Nombre de jetons dans le tableau */
     struct cell** dependant_cells; /** Tableau de pointeurs des cellules qui dépendent de cette cellule */
-    size_t dependant_cells_count; /** Nombre de cellules dépendantes */
+    int dependant_cells_count; /** Nombre de cellules dépendantes */
 } s_cell ;
 
 // les fonctions qui utilisent la var globale

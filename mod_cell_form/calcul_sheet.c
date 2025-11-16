@@ -21,7 +21,7 @@ s_operation operations[] = {
     {'\0', NULL} //fin tab operation
 };
 
-// UTILE POUR JALON 3 JE PENSE (init matrice de cellules)
+// UTILE POUR init matrice de cellules dans main
 void initialisation_sheet(int lines, int cols){
     global_sheet.lines = lines;
     global_sheet.cols = cols;
@@ -62,7 +62,7 @@ void analyseCell(s_cell * cell){
     // initialise tableau de 50 pour les tokens
     cell->tokens = malloc(50 * sizeof(s_token));
     if(cell->tokens == NULL){
-        LOG_INFO("Erreur d'allocation mémoire pour les tokens de la cellule");
+        LOG("Erreur d'allocation mémoire pour les tokens de la cellule");
         return;
     }
 
@@ -90,7 +90,7 @@ void analyseCell(s_cell * cell){
             
             // avance le ptr de chaîne à endstring pour ne pas retraiter le nb
             string = end_of_string;
-            LOG_INFO("Nombre trouvé et ajouté en tant que token: %f", number);
+            LOG("Nombre trouvé et ajouté en tant que token: %.2f", number);
 
         } else if( (*string >= 'A' && *string <= 'Z') || (*string >= 'a' && *string <= 'z')){
             char* end_of_string;
@@ -108,7 +108,7 @@ void analyseCell(s_cell * cell){
             cell->tokens[cell->token_count] = reference_token;
             cell->token_count++;
             string = end_of_string;
-            LOG_INFO("Référence de cellule trouvée et ajoutée en tant que token : %c", *string);
+            LOG("Référence de cellule trouvée et ajoutée en tant que token : %c", *string);
 
         } else if(*string == '+' || *string == '-' || *string == '*' || *string == '/'|| *string == '%'){
             s_token operator_token;
@@ -116,8 +116,8 @@ void analyseCell(s_cell * cell){
             operator_token.value.operator = find_operator_func(*string);
             cell->tokens[cell->token_count] = operator_token;
             cell->token_count++;
+            LOG("Opérateur trouvé et ajouté en tant que token : %c", *string);
             string++;
-            LOG_INFO("Opérateur trouvé et ajouté en tant que token");
         } else {
             // ignorer les espaces + caractères non reconnus
             string++;
@@ -133,32 +133,32 @@ void analyseCell(s_cell * cell){
  */
 void evaluateCell(s_cell * cell){
     if(cell->tokens == NULL || cell->token_count == 0){
-        LOG_INFO("Aucun token à évaluer dans la cellule");
+        LOG("Aucun token à évaluer dans la cellule");
         return;
     }
 
     my_stack_t* eval_stack = STACK_CREATE(cell->token_count, double);
     if(eval_stack == NULL){
-        LOG_INFO("Erreur d'allocation mémoire pour la pile d'évaluation");
+        LOG("Erreur d'allocation mémoire pour la pile d'évaluation");
         return;
     }
 
     for(int i=0; i < cell->token_count; i++){
         if(cell->tokens[i].type == VALUE){
             STACK_PUSH(eval_stack, cell->tokens[i].value.cst, double);
-            LOG_INFO("Token valeur empilée: %f", cell->tokens[i].value.cst);
+            LOG("Token valeur empilée: %.2f", cell->tokens[i].value.cst);
         } else if(cell->tokens[i].type == REF){
             evaluateCell(cell->tokens[i].value.ref); // évaluer la cell référencé avant d'utiliser sa valeur
             STACK_PUSH(eval_stack, cell->tokens[i].value.ref->value, double);
-            LOG_INFO("Token référence empilée: %f", cell->tokens[i].value.ref->value);
+            LOG("Token référence empilée: %.2f", cell->tokens[i].value.ref->value);
         } else if(cell->tokens[i].type == OPERATOR){
             // appel la fonction de l'opérateur avec la pile
             cell->tokens[i].value.operator(eval_stack);
-            LOG_INFO("Opérateur appliqué");
+            LOG("Opérateur appliqué");
         }
     }
     STACK_POP2(eval_stack, cell->value, double);
-    LOG_INFO("Valeur finale de la cellule évaluée: %f", cell->value);
+    LOG("Valeur finale de la cellule évaluée: %.2f", cell->value);
 
     // libèration de la pileeee
     STACK_REMOVE(eval_stack);

@@ -1,6 +1,6 @@
 # Mon petit Makefile minimaliste
-launch: main.c mod_list/list.c
-	gcc -I mod_list main.c mod_list/list.c -o launch
+launch: test_jalon2.c mod_cell_form/cell.c mod_cell_form/calcul_sheet.c stack/stack.c
+	gcc -I mod_cell_form -I stack -I log test_jalon2.c mod_cell_form/cell.c mod_cell_form/calcul_sheet.c stack/stack.c -o launch -lm
 
 clean:
 	rm -f launch
