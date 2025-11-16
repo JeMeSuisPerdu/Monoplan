@@ -3,8 +3,8 @@
  * @brief 
  */
 
-#ifndef CELL
-#define CELL
+#ifndef CELL_H
+#define CELL_H
 
 #include "../stack/stack.h"
 #include <stdlib.h>
@@ -21,7 +21,7 @@ typedef struct token {
     union {
         double cst;
         s_cell* ref;
-        void (*operator) (my_stack_t* eval); 
+        void (*operator) (my_stack_t* eval); // pointeur vers une fonc qui a une pile(param) et ne retourne rien
     } value ;
 } s_token ;
 
@@ -44,5 +44,9 @@ typedef struct cell {
     struct cell** dependant_cells; /** Tableau de pointeurs des cellules qui dépendent de cette cellule */
     size_t dependant_cells_count; /** Nombre de cellules dépendantes */
 } s_cell ;
+
+// les fonctions qui utilisent la var globale
+void analyseCell(s_cell * cell);
+void evaluateCell(s_cell * cell);
 
 #endif
