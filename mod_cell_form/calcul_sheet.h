@@ -15,7 +15,7 @@ extern s_calcul_sheet global_sheet;
 
 // UNE OPERATIONNNNN
 typedef struct {
-    char* operator_name;
+    char operator_name;
     void (*operator_func)(my_stack_t*);
 } s_operation;
 

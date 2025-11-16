@@ -13,12 +13,12 @@ s_calcul_sheet global_sheet;
 
 // tab des operations dispo (dans .h)
 s_operation operations[] = {
-    {"+", operator_add},
-    {"-", operator_subtract},
-    {"*", operator_multiply},
-    {"/", operator_divide},
-    {"%", operator_modulo},
-    {NULL, NULL} //fin tab operation
+    {'+', operator_add},
+    {'-', operator_subtract},
+    {'*', operator_multiply},
+    {'/', operator_divide},
+    {'%', operator_modulo},
+    {'\0', NULL} //fin tab operation
 };
 
 // UTILE POUR JALON 3 JE PENSE (init matrice de cellules)
@@ -159,7 +159,7 @@ void evaluateCell(s_cell * cell){
     }
     STACK_POP2(eval_stack, cell->value, double);
     LOG_INFO("Valeur finale de la cellule évaluée: %f", cell->value);
-    
+
     // libèration de la pileeee
     STACK_REMOVE(eval_stack);
 }
@@ -237,8 +237,8 @@ void evaluateCell(s_cell * cell){
     * @param operator_char pointeur de char représentant l'opérateur
     * @return Pointeur vers une fonction operator_... ou NULL si non trouvé
 **/
-void (*find_operator_func(char* operator_char))(my_stack_t*) {
-    for (int i = 0; operations[i].operator_name != NULL; i++) {
+void (*find_operator_func(char operator_char))(my_stack_t*) {
+    for (int i = 0; operations[i].operator_name != '\0'; i++) {
         if (operations[i].operator_name == operator_char) {
             return operations[i].operator_func;
         }
