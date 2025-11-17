@@ -31,12 +31,6 @@ typedef struct token {
  * @struct cell
  * @brief Représente une cellule du tableur
  * 
- * 
- * @code 
-    Création d’un tableau de 3 tokens
-    cell->token_count = 3;
-    cell->tokens = malloc(cell->token_count * sizeof(s_token));
-  @endcode
  */
 typedef struct cell {
     char* content; /**  */
@@ -47,6 +41,10 @@ typedef struct cell {
     int dependant_cells_count; /** Nombre de cellules dépendantes */
 } s_cell ;
 
-
+/** 
+ * @brief Modifie le contenue d'une cellule
+ * 
+ */
+void change_content_cell(s_cell* cell, char* content);
 
 #endif
