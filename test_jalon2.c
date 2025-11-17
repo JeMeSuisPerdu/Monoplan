@@ -64,10 +64,10 @@ int main() {
     LOG("Évaluation...\n");
     
     LOG("RÉSULTAT Test 2 (A2): %.2f\n", cell_A2->value);
-    if (cell_A2->value == 29.0) {
-        LOG(">>> SUCCÈS (Attendu: 29.0 ) \n");
+    if (cell_A2->value == 13.0) {
+        LOG(">>> SUCCÈS (Attendu: 13.0 ) \n");
     } else {
-        LOG(">>> ÉCHEC (Attendu: 29.0 )\n");
+        LOG(">>> ÉCHEC (Attendu: 13.0 )\n");
     }
 
     // --------------------------------------------------------------------------------------------

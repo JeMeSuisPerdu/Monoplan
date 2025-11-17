@@ -8,10 +8,18 @@
 
 
 
-// la variable globale (dans .h)
+/**
+ * @brief Variable extern de type structure s_calcul_sheet (dans .h)
+ * Elle permet de faire appel à une feuille de calcul et à ses champs !! 
+ */
 s_calcul_sheet global_sheet;
 
-// tab des operations dispo (dans .h)
+/**
+ * @brief Tableau de structure (type s_operation) extern (déclaré dans le .h)
+ * qui stock les opérateur et fonctions associés manipulant la stack
+ * @param cols Nombre de colonnes
+ * @param lines Nombre de lignes
+ */
 s_operation operations[] = {
     {'+', operator_add},
     {'-', operator_subtract},
@@ -21,7 +29,11 @@ s_operation operations[] = {
     {'\0', NULL} //fin tab operation
 };
 
-// UTILE POUR init matrice de cellules dans main
+/**
+ * @brief Fonction d'initialisation de la feuille de calcul qui est une matrice 
+ * @param cols Nombre de colonnes
+ * @param lines Nombre de lignes
+ */
 void initialisation_sheet(int cols,int lines){
     global_sheet.lines = lines;
     global_sheet.cols = cols;
@@ -36,6 +48,12 @@ void initialisation_sheet(int cols,int lines){
     }
 }
 
+/**
+ * @brief Fonction d'initialisation de la feuille de calcul qui est une matrice 
+ * @param cols Nombre de colonnes
+ * @param lines Nombre de lignes
+ * @return Un pointeur vers la cellule trouvé ou crée !!!!
+ */
 s_cell * get_or_create_cell(int col,int line){
     if(line<0 || line >= global_sheet.lines || col <0 || col >= global_sheet.cols){
         LOG("Erreur : Indices de cellule hors limites (%d, %d)", line, col);
@@ -60,11 +78,11 @@ s_cell * get_or_create_cell(int col,int line){
 
 
 /**
- * @brief Fonction d'analyse du contenu d'une cellule (galère à écrire)
+ * @brief Fonction d'analyse du contenu d'une cellule (galère à écrire TwT)
  * @param cell Pointeur vers une cellule qui doit être analysée
  */
 void analyseCell(s_cell * cell){
-    // initialise tableau de 50 pour les tokens
+    // initialise tableau de taill 50 pour les tokens
     cell->tokens = malloc(50 * sizeof(s_token));
     if(cell->tokens == NULL){
         LOG("Erreur d'allocation mémoire pour les tokens de la cellule");
@@ -181,7 +199,6 @@ void evaluateCell(s_cell * cell){
  * @brief fonction add qui prend en param une pile et fait l'addition sur les deux derniers elements empilés
  * @param stack Une pile utilisée pour l'évaluation
  */
-
  void operator_add(my_stack_t* stack){
     double val1, val2,result;
     STACK_POP2(stack, val2, double);
@@ -247,14 +264,15 @@ void evaluateCell(s_cell * cell){
 /**
     * @brief fonction find_operator_func qui prend un char,
     *  + retourne un pointeur vers une fonction qui (elle) prend un my_stack_t* et retourne void
-    * @param operator_char pointeur de char représentant l'opérateur
+    * @param operator_char char représentant l'opérateur
     * @return Pointeur vers une fonction operator_... ou NULL si non trouvé
 **/
 void (*find_operator_func(char operator_char))(my_stack_t*) {
-    for (int i = 0; operations[i].operator_name != '\0'; i++) {
+    int i = 0;
+    while(operations[i].operator_name != '\0') {
         if (operations[i].operator_name == operator_char) {
             return operations[i].operator_func;
         }
+        i++;
     }
-    return NULL;
 }
