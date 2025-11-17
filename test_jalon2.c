@@ -27,14 +27,13 @@ int main() {
     // crée la cellule A1 (indice 0, 0)
     s_cell* cell_A1 = get_or_create_cell(0, 0);
     // copie la formule NPI + stock dans struct cell
-    cell_A1->content = malloc(10 * sizeof(char));
-    strcpy(cell_A1->content, "=10 5 +");
+    change_content_cell(cell_A1, "=10 5 +");
     LOG("Contenu de A1: %s\n", cell_A1->content);
     // analyse
-    analyseCell(cell_A1);
+    analyse_cell(cell_A1);
     LOG("Analyse... %d tokens trouvés.\n", cell_A1->token_count);
     // évaluation
-    evaluateCell(cell_A1);
+    evaluate_cell(cell_A1);
     LOG("Évaluation...\n");
     LOG("RÉSULTAT Test 1 (A1): %f\n", cell_A1->value);
     if (cell_A1->value == 15.0) {
@@ -51,16 +50,15 @@ int main() {
     s_cell* cell_A2 = get_or_create_cell(0, 1);
     
     // ref vers A1(vaut 15.0), puis nb 2, puis multiplication, puis nb 1, puis soustraction
-    cell_A2->content = malloc(10 * sizeof(char));
-    strcpy(cell_A2->content, "=A1 2 1 * -");
+    change_content_cell(cell_A2, "=A1 2 1 * -");
     
     LOG("Contenu de A2: %s\n", cell_A2->content);
 
-    analyseCell(cell_A2);
+    analyse_cell(cell_A2);
     LOG("Analyse... %d tokens trouvés.\n", cell_A2->token_count);
 
     // ici evaluateCell appel récursivement evaluateCell(A1)
-    evaluateCell(cell_A2);
+    evaluate_cell(cell_A2);
     LOG("Évaluation...\n");
     
     LOG("RÉSULTAT Test 2 (A2): %.2f\n", cell_A2->value);
@@ -80,16 +78,15 @@ int main() {
     
     // etape 1: 20 5 /  = 4
     // etape 2: 4 2 %   = 0
-    cell_B1->content = malloc(15 * sizeof(char));
-    strcpy(cell_B1->content, "=20 5 / 2 % 1 2 + -"); 
+    change_content_cell(cell_B1, "=20 5 / 2 % 1 2 + -");
     
     LOG("Contenu de B1: %s\n", cell_B1->content);
 
 
-    analyseCell(cell_B1);
+    analyse_cell(cell_B1);
     LOG("Analyse... %d tokens trouvés.\n",cell_B1->token_count);
 
-    evaluateCell(cell_B1);
+    evaluate_cell(cell_B1);
     LOG("Évaluation...\n");
     
     // validation
@@ -109,16 +106,15 @@ int main() {
     s_cell* cell_A4 = get_or_create_cell(0, 3);
     
     // ref vers A100 (supérieur à A10), puis nb 2, puis multiplication
-    cell_A4->content = malloc(10 * sizeof(char));
-    strcpy(cell_A4->content, "=A100 2 *");
+    change_content_cell(cell_A4, "=A100 2 *");
     
     LOG("Contenu de A4: %s\n", cell_A4->content);
 
-    analyseCell(cell_A4);
+    analyse_cell(cell_A4);
     LOG("Analyse... %d tokens trouvés.\n", cell_A4->token_count);
 
     // ici evaluateCell appel récursivement evaluateCell(A1)
-    evaluateCell(cell_A4);
+    evaluate_cell(cell_A4);
     LOG("Évaluation...\n");
     
     LOG("RÉSULTAT Test 4 (A4): %.2f\n", cell_A4->value);
@@ -132,6 +128,8 @@ int main() {
     //-----------------------------   FIN DES TESTS   ----------------------------------------
     // ---------------------------------------------------------------------------------------
 
+    LOG("------------------------------ LIBERATION DE LA MEMOIRE --------------------------------\n");
+
     // libérer les chaine de caractère, les tokens et les cellules allouées
     free(cell_A1->content);
     free(cell_A1->tokens);
@@ -144,7 +142,7 @@ int main() {
     free(cell_B1->content);
     free(cell_B1->tokens);
     free(cell_B1);
-    LOG("------------------------------ LIBERATION DE LA MEMOIRE --------------------------------\n");
+
     LOG("Contenu des cellules A1,A2,B1, libérés avec succès.");
     LOG("Tokens des cellules A1,A2,B1, libérés avec succès.");
     LOG("Cellules A1,A2,B1, libérés avec succès.");

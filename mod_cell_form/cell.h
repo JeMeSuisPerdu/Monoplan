@@ -14,8 +14,6 @@ typedef struct cell s_cell;
 /** 
  * @struct token
  * @brief Représente un jeton d'une cellule
- * 
- *
  *
  */
 typedef struct token {
@@ -26,6 +24,7 @@ typedef struct token {
         void (*operator) (my_stack_t* eval); // pointeur vers une fonc qui a une pile(param) et ne retourne rien
     } value ;
 } s_token ;
+
 
 /** 
  * @struct cell
@@ -41,10 +40,30 @@ typedef struct cell {
     int dependant_cells_count; /** Nombre de cellules dépendantes */
 } s_cell ;
 
+/**
+ * @brief Fonction d'initialisation de la feuille de calcul qui est une matrice 
+ * @param cols Nombre de colonnes
+ * @param lines Nombre de lignes
+ * @return Un pointeur vers la cellule trouvé ou crée !!!!
+ */
+s_cell * get_or_create_cell(int col, int line);
+
 /** 
  * @brief Modifie le contenue d'une cellule
  * 
  */
 void change_content_cell(s_cell* cell, char* content);
+
+/**
+ * @brief Fonction d'analyse du contenu d'une cellule (galère à écrire TwT)
+ * @param cell Pointeur vers une cellule qui doit être analysée
+ */
+void analyse_cell(s_cell * cell);
+
+/**
+ * @brief Fonction d'évaluation d'une cellule
+ * @param cell Pointeur vers une cellule qui doit être évaluée
+ */
+void evaluate_cell(s_cell * cell);
 
 #endif

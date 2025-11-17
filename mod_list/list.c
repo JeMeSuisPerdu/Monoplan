@@ -16,7 +16,7 @@ node_t* list_create (void) {
 }
 
 void* list_get_data (const node_t* node) {
-    if(node == NULL) {
+    if (node == NULL) {
         LOG("Le noeud est NULL, impossible de récupérer la data \n");
         return NULL;
     }
@@ -24,12 +24,12 @@ void* list_get_data (const node_t* node) {
 }
 
 void list_set_data (node_t* node, void* data) {
-    if(node == NULL) {
+    if (node == NULL) {
         LOG("Le noeud est NULL, impossible d'initialiser la data");
         return;
     }
     // Cas où la data existe déjà : lecture sans écraser
-    if(node->data != NULL)
+    if (node->data != NULL)
     {
         list_get_data(node);
         LOG("La data du noeud est déjà initialisée. Passage en mode lecture de la data.\n");
@@ -42,7 +42,7 @@ void list_set_data (node_t* node, void* data) {
 }
 
 node_t* list_next (node_t* node) {
-    if(node == NULL) {
+    if (node == NULL) {
         LOG("Le noeud est NULL, impossible de récupérer le noeud suivant");
         return NULL;
     }
@@ -50,7 +50,7 @@ node_t* list_next (node_t* node) {
 }
 
 node_t* list_insert (node_t* head, void* data) {
-    if(head == NULL) {
+    if (head == NULL) {
         LOG("La liste est vide, impossible d'insérer un noeud en tête de liste");
         return NULL;
     }
@@ -67,7 +67,7 @@ node_t* list_insert (node_t* head, void* data) {
 }
 
 node_t* list_append (node_t* head, void* data) {
-    if(head == NULL) {
+    if (head == NULL) {
         LOG("La liste est vide, impossible d'ajouter un noeud en queue de file");
         return NULL;
     }
@@ -89,7 +89,7 @@ node_t* list_append (node_t* head, void* data) {
 }
 
 void list_affiche_int (node_t* head) {
-    if(head == NULL) {
+    if (head == NULL) {
         LOG("La liste est vide, impossible d'afficher son contenu");
         return;
     }
@@ -107,10 +107,10 @@ void list_affiche_int (node_t* head) {
 }
 
 node_t* list_remove (node_t* head, void* data) {
-    if(head == NULL) {
+    if (head == NULL) {
         LOG("La liste est vide, impossible de supprimer un noeud\n");
         return NULL;
-    }else if(head->data == data) {    // Suppression de la tête si elle correspond à la data
+    }else if (head->data == data) {    // Suppression de la tête si elle correspond à la data
         return list_headRemove(head);
     }else{ 
         node_t* node = head;
@@ -118,7 +118,7 @@ node_t* list_remove (node_t* head, void* data) {
         while (node->next != NULL && node->next->data != data ) {
             node = node->next;
         }
-        if(node->next != NULL) {
+        if (node->next != NULL) {
             // Noeud à supprimer (celui qui contient la data)
             node_t* node_to_delete = node->next;
             // Noeud actuel pointe sur le noeud suivant celui à supprimer
@@ -135,7 +135,7 @@ node_t* list_remove (node_t* head, void* data) {
 }
 
 node_t* list_headRemove (node_t* head) {
-    if(head == NULL) {
+    if (head == NULL) {
         LOG("La liste est vide, impossible de supprimer la tête");
         return NULL;
     }
@@ -147,7 +147,7 @@ node_t* list_headRemove (node_t* head) {
 }
 
 void list_destroy (node_t* head) {
-    if(head == NULL) {
+    if (head == NULL) {
         LOG("La liste est vide, impossible de la détruire");
         return;
     }
