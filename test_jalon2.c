@@ -13,122 +13,238 @@
  */
 int main() {
     
-    LOG("------------------------------ DEBUTS DES TEST DU JALON 2 ------------------------------\n");
+    TEST("------------------------------ DEBUTS DES TEST DU JALON 2 ------------------------------\n");
 
     // initialise la feuille de calcul
     initialisation_sheet(10, 10);
-    LOG("        Feuille de calcul 10x10 initialisée.\n");
+    TEST("        Feuille de calcul 10x10 initialisée.\n");
 
     // ---------------------------------------------------------------------------------------
-    //-----------------------------   TEST 1 (calcul nombre)   -------------------------------
+    //-------------------   TEST 1 (calcul simple avec operator(+))   ------------------------
     // ---------------------------------------------------------------------------------------
 
-    LOG("---------------------- TEST 1: Calcul avec NPI de nombres ----------------------\n");
+    TEST("---------------------- TEST 1: Calcul simple avec opérateur (+) ----------------------\n");
     // crée la cellule A1 (indice 0, 0)
     s_cell* cell_A1 = get_or_create_cell(0, 0);
-    // copie la formule NPI + stock dans struct cell
+
+    // Nb1 = 10, Nb2 = 5, puis addition
     change_content_cell(cell_A1, "=10 5 +");
-    LOG("Contenu de A1: %s\n", cell_A1->content);
-    // analyse
+    TEST("Contenu de la cellule A1: %s\n", cell_A1->content);
+
     analyse_cell(cell_A1);
-    LOG("Analyse... %d tokens trouvés.\n", cell_A1->token_count);
-    // évaluation
+    TEST("Analyse en cours... %d tokens trouvés.\n", cell_A1->token_count);
+
     evaluate_cell(cell_A1);
-    LOG("Évaluation...\n");
-    LOG("RÉSULTAT Test 1 (A1): %f\n", cell_A1->value);
+    TEST("Évaluation en cours...\n");
+
+    TEST("RÉSULTAT TEST 1 (A1): %f\n", cell_A1->value);
     if (cell_A1->value == 15.0) {
-        LOG(">>> SUCCÈS (Attendu: 15.0)\n");
+        TEST(">>> SUCCÈS (Attendu: 15.0)\n");
     } else {
-        LOG(">>> ÉCHEC (Attendu: 15.0)\n");
+        TEST(">>> ÉCHEC (Attendu: 15.0)\n");
     }
-    // -----------------------------------------------------------------------------------------------
-    //----------------------------- TEST 2 (calcul avec référence inconnue)---------------------------
-    // -----------------------------------------------------------------------------------------------
-    
-    LOG("---------------- TEST 2: Calcul avec référence (opérateur * et -) ---------------\n");
-    // crée la cellule A2 (indice 1, 0)
+
+    // ---------------------------------------------------------------------------------------
+    //-------------------   TEST 2 (calcul simple avec operator(-))   ------------------------
+    // ---------------------------------------------------------------------------------------
+
+    TEST("---------------------- TEST 2: Calcul simple avec opérateur (-) ----------------------\n");
+    // crée la cellule A2 (indice 0, 1)
     s_cell* cell_A2 = get_or_create_cell(0, 1);
     
-    // ref vers A1(vaut 15.0), puis nb 2, puis multiplication, puis nb 1, puis soustraction
-    change_content_cell(cell_A2, "=A1 2 1 * -");
-    
-    LOG("Contenu de A2: %s\n", cell_A2->content);
+    // Nb1 = 10, Nb2 = 1, puis soustraction
+    change_content_cell(cell_A2, "=10 1 -");
+    TEST("Contenu de la cellule A2: %s\n", cell_A2->content);
 
     analyse_cell(cell_A2);
-    LOG("Analyse... %d tokens trouvés.\n", cell_A2->token_count);
+    TEST("Analyse en cours... %d tokens trouvés.\n", cell_A2->token_count);
 
-    // ici evaluateCell appel récursivement evaluateCell(A1)
     evaluate_cell(cell_A2);
-    LOG("Évaluation...\n");
+    TEST("Évaluation en cours...\n");
     
-    LOG("RÉSULTAT Test 2 (A2): %.2f\n", cell_A2->value);
-    if (cell_A2->value == 13.0) {
-        LOG(">>> SUCCÈS (Attendu: 13.0 ) \n");
+    TEST("RÉSULTAT TEST 2 (A2): %.2f\n", cell_A2->value);
+    if (cell_A2->value == 9.0) {
+        TEST(">>> SUCCÈS (Attendu: 9.0 ) \n");
     } else {
-        LOG(">>> ÉCHEC (Attendu: 13.0 )\n");
+        TEST(">>> ÉCHEC (Attendu: 9.0 )\n");
     }
 
-    // --------------------------------------------------------------------------------------------
-    //----------------------------- TEST 3 (calcul avec tous les opérateurs) ---------------------
-    // --------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------
+    //-------------------   TEST 3 (calcul simple avec operator(*))   ------------------------
+    // ---------------------------------------------------------------------------------------
 
-    LOG("---------------------- TEST 3: Calcul NPI avec tous les opérateurs -----------------------\n");
-    // crée la cellule B1 (indice 0, 1)
-    s_cell* cell_B1 = get_or_create_cell(1, 0);
+    TEST("---------------------- TEST 3: Calcul simple avec opérateur (*) ----------------------\n");
+    // crée la cellule A3 (indice 0, 2)
+    s_cell* cell_A3 = get_or_create_cell(0, 2);
     
-    // etape 1: 20 5 /  = 4
-    // etape 2: 4 2 %   = 0
-    change_content_cell(cell_B1, "=20 5 / 2 % 1 2 + -");
+    // Nb1 = 50, Nb2 = 2, puis soustraction
+    change_content_cell(cell_A3, "=50 2 *");
+    TEST("Contenu de la cellule A3: %s\n", cell_A3->content);
+
+    analyse_cell(cell_A3);
+    TEST("Analyse en cours... %d tokens trouvés.\n", cell_A3->token_count);
+
+    evaluate_cell(cell_A3);
+    TEST("Évaluation en cours...\n");
     
-    LOG("Contenu de B1: %s\n", cell_B1->content);
-
-
-    analyse_cell(cell_B1);
-    LOG("Analyse... %d tokens trouvés.\n",cell_B1->token_count);
-
-    evaluate_cell(cell_B1);
-    LOG("Évaluation...\n");
-    
-    // validation
-    LOG("RÉSULTAT Test 3 (B1): %.2f\n", cell_B1->value);
-    if (cell_B1->value == -3.0) {
-        LOG(">>> SUCCÈS (Attendu: -3.0)\n");
+    TEST("RÉSULTAT TEST 3 (A3): %.2f\n", cell_A3->value);
+    if (cell_A3->value == 100.0) {
+        TEST(">>> SUCCÈS (Attendu: 100.0 ) \n");
     } else {
-        LOG(">>> ÉCHEC (Attendu: -3.0)\n");
+        TEST(">>> ÉCHEC (Attendu: 100.0 )\n");
     }
 
-    // -----------------------------------------------------------------------------------------------
-    //----------------------------- TEST 4 (calcul avec référence inconnue)---------------------------
-    // -----------------------------------------------------------------------------------------------
-    
-    LOG("---------------- TEST 4: Calcul avec référence inconnue (débordement de limites)---------------\n");
-    // crée la cellule A4 (indice 1, 0)
+    // ---------------------------------------------------------------------------------------
+    //-------------------   TEST 4 (calcul simple avec operator(/))   ------------------------
+    // ---------------------------------------------------------------------------------------
+
+    TEST("---------------------- TEST 4: Calcul simple avec opérateur (/) ----------------------\n");
+    // crée la cellule A4 (indice 0, 3)
     s_cell* cell_A4 = get_or_create_cell(0, 3);
     
-    // ref vers A100 (supérieur à A10), puis nb 2, puis multiplication
-    change_content_cell(cell_A4, "=A100 2 *");
-    
-    LOG("Contenu de A4: %s\n", cell_A4->content);
+    // Nb1 = 2000, Nb2 = 2, puis soustraction
+    change_content_cell(cell_A4, "=2000 2 /");
+    TEST("Contenu de la cellule A4: %s\n", cell_A4->content);
 
     analyse_cell(cell_A4);
-    LOG("Analyse... %d tokens trouvés.\n", cell_A4->token_count);
+    TEST("Analyse en cours... %d tokens trouvés.\n", cell_A4->token_count);
 
-    // ici evaluateCell appel récursivement evaluateCell(A1)
     evaluate_cell(cell_A4);
-    LOG("Évaluation...\n");
+    TEST("Évaluation en cours...\n");
     
-    LOG("RÉSULTAT Test 4 (A4): %.2f\n", cell_A4->value);
-    if (cell_A4->value == 0.0) {
-        LOG(">>> SUCCÈS (Attendu: 0.0 car cellule en dehors des limites) \n");
+    TEST("RÉSULTAT TEST 4 (A4): %.2f\n", cell_A4->value);
+    if (cell_A4->value == 1000.0) {
+        TEST(">>> SUCCÈS (Attendu: 1000.0 ) \n");
     } else {
-        LOG(">>> ÉCHEC (Attendu: 0.0 car cellule en dehors des limites)\n");
+        TEST(">>> ÉCHEC (Attendu: 1000.0 )\n");
     }
 
     // ---------------------------------------------------------------------------------------
-    //-----------------------------   FIN DES TESTS   ----------------------------------------
+    //-------------------   TEST 5 (calcul complexe avec operator(+ -))   --------------------
     // ---------------------------------------------------------------------------------------
 
-    LOG("------------------------------ LIBERATION DE LA MEMOIRE --------------------------------\n");
+    TEST("---------------------- TEST 5: Calcul complexe avec operator(+ -) ----------------------\n");
+    // crée la cellule A5 (indice 0, 4)
+    s_cell* cell_A5 = get_or_create_cell(0, 4);
+    
+    // Nb1 = 2, puis multiplication, Nb2 = 10, Nb3 = 1, puis addition
+    change_content_cell(cell_A5, "=2 10 1 +*");
+    TEST("Contenu de la cellule A5: %s\n", cell_A5->content);
+
+    analyse_cell(cell_A5);
+    TEST("Analyse en cours... %d tokens trouvés.\n", cell_A5->token_count);
+
+    evaluate_cell(cell_A5);
+    TEST("Évaluation en cours...\n");
+    
+    TEST("RÉSULTAT TEST 5 (A5): %.2f\n", cell_A5->value);
+    if (cell_A5->value == 22.0) {
+        TEST(">>> SUCCÈS (Attendu: 22.0 ) \n");
+    } else {
+        TEST(">>> ÉCHEC (Attendu: 22.0 )\n");
+    }
+ 
+    // ---------------------------------------------------------------------------------------
+    //-------------------   TEST 6 (calcul complexe avec operator(* /))   --------------------
+    // ---------------------------------------------------------------------------------------
+
+    TEST("---------------------- TEST 6: Calcul complexe avec operator(* /) ----------------------\n");
+    // crée la cellule A6 (indice 0, 5)
+    s_cell* cell_A6 = get_or_create_cell(0, 5);
+    
+    // Nb1 = 1, puis multiplication,  Nb2 = 10, Nb2 = 2, puis division
+    change_content_cell(cell_A6, "=1 10 2 */");
+    TEST("Contenu de la cellule A6: %s\n", cell_A6->content);
+   
+    analyse_cell(cell_A6);
+    TEST("Analyse en cours... %d tokens trouvés.\n", cell_A6->token_count);
+
+    evaluate_cell(cell_A6);
+    TEST("Évaluation en cours...\n");
+
+    TEST("RÉSULTAT TEST 6 (A6): %.2f\n", cell_A6->value);
+    if (cell_A6->value == 5.0) {
+        TEST(">>> SUCCÈS (Attendu: 5.0 ) \n");
+    } else {
+        TEST(">>> ÉCHEC (Attendu: 5.0 )\n");
+    }
+    // -----------------------------------------------------------------------------------------------
+    //----------------------------- TEST 7 (calcul avec référence vers A1 )---------------------------
+    // -----------------------------------------------------------------------------------------------
+    
+    TEST("---------------- TEST 7: Calcul avec référence vers A ---------------\n");
+    // crée la cellule B1 (indice 1, 0)
+    s_cell* cell_B1 = get_or_create_cell(1, 0);
+    
+    // ref vers A1 (vaut 15), puis nb 2, puis multiplication
+    change_content_cell(cell_B1, "=A1 2 *");
+    
+    TEST("Contenu de B1: %s\n", cell_B1->content);
+
+    analyse_cell(cell_B1);
+    TEST("Analyse... %d tokens trouvés.\n", cell_B1->token_count);
+
+    // ici evaluateCell appel récursivement evaluateCell(A1)
+    evaluate_cell(cell_B1);
+    TEST("Évaluation...\n");
+    
+    TEST("RÉSULTAT TEST 7 (B1): %.2f\n", cell_B1->value);
+    if (cell_B1->value == 30.0) {
+        TEST(">>> SUCCÈS (Attendu: 30.0 ) \n");
+    } else {
+        TEST(">>> ÉCHEC (Attendu: 30.0 )\n");
+    }
+    // -----------------------------------------------------------------------------------------------
+    //----------------------------- TEST 8 (calcul avec référence inconnue)---------------------------
+    // -----------------------------------------------------------------------------------------------
+    
+    TEST("---------------- TEST 8: Calcul avec référence inconnue (débordement de limites)---------------\n");
+    // crée la cellule B2 (indice 1, 1)
+    s_cell* cell_B2 = get_or_create_cell(1, 1);
+    
+    // ref vers A100 (supérieur à A10), puis nb 2, puis multiplication
+    change_content_cell(cell_B2, "=A100 2 *");
+    
+    TEST("Contenu de B2: %s\n", cell_B2->content);
+
+    analyse_cell(cell_B2);
+    TEST("Analyse... %d tokens trouvés.\n", cell_B2->token_count);
+
+    evaluate_cell(cell_B2);
+    TEST("Évaluation...\n");
+    
+    TEST("RÉSULTAT TEST 8 (B2): %.2f\n", cell_B2->value);
+    if (cell_B2->value == 0.0) {
+        TEST(">>> SUCCÈS (Attendu: 0.0 ) \n");
+    } else {
+        TEST(">>> ÉCHEC (Attendu: 0.0 )\n");
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // ----------------------------- TEST 9 (cas où la cellule est vide) -----------------------------
+    // -----------------------------------------------------------------------------------------------
+    
+    TEST("---------------- TEST 9: Cas où la cellule est vide ---------------\n");
+    s_cell* cell_B3 = get_or_create_cell(1, 2);
+    
+    change_content_cell(cell_B3, " ");
+    
+    TEST("Contenu de B3: %s\n", cell_B3->content);
+
+    analyse_cell(cell_B3);
+    TEST("Analyse... %d tokens trouvés.\n", cell_B3->token_count);
+
+    evaluate_cell(cell_B3);
+    TEST("Évaluation...\n");
+    
+    TEST("RÉSULTAT TEST 9 (B3): %.2f\n", cell_B3->value);
+    if (cell_B3->value == 0.0) {
+        TEST(">>> SUCCÈS (Attendu: 0.0 ) \n");
+    } else {
+        TEST(">>> ÉCHEC (Attendu: 0.0 )\n");
+    }
+
+    TEST("------------------------------ LIBERATION DE LA MEMOIRE --------------------------------\n");
 
     // libérer les chaine de caractère, les tokens et les cellules allouées
     free(cell_A1->content);
@@ -143,10 +259,10 @@ int main() {
     free(cell_B1->tokens);
     free(cell_B1);
 
-    LOG("Contenu des cellules A1,A2,B1, libérés avec succès.");
-    LOG("Tokens des cellules A1,A2,B1, libérés avec succès.");
-    LOG("Cellules A1,A2,B1, libérés avec succès.");
-    LOG("---------------------------------------------------------------\n");
-    LOG("------------------------- TESTS FINIS -------------------------\n");
+    TEST("Contenu des cellules A1,A2,B1, libérés avec succès.");
+    TEST("Tokens des cellules A1,A2,B1, libérés avec succès.");
+    TEST("Cellules A1,A2,B1, libérés avec succès.");
+    TEST("---------------------------------------------------------------\n");
+    TEST("------------------------- TESTS FINIS -------------------------\n");
     return 0;
 }
