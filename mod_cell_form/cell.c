@@ -4,7 +4,8 @@
 #include "calcul_sheet.h"
 #include "log.h"
 
-s_cell * get_or_create_cell(int col,int line){
+
+s_cell* get_or_create_cell(int col,int line){
     if (line<0 || line >= global_sheet.lines || col <0 || col >= global_sheet.cols){
         LOG("Erreur : Indices de cellule hors limites (%d, %d)", line, col);
         return NULL;
@@ -28,11 +29,19 @@ s_cell * get_or_create_cell(int col,int line){
 
 
 void change_content_cell(s_cell* cell, char* new_content) {
-    int taille_contenu = strlen(new_content);
-
-    cell->content = (cell->content == NULL) ? malloc(taille_contenu * sizeof(char)) : realloc(cell, taille_contenu * sizeof(char));
-    
-    strcpy(cell->content, new_content);
+    // teste si la chaine passée est vide
+    if (*new_content == '\0') { // si oui on fait pointer sur NULL
+        if (cell->content != NULL) { // on vide la mémoire et pointe le pointeur vers NULL uniquement si il ne l'était pas déjà
+            free(cell->content);
+            cell->content = NULL;
+        }
+    } else {
+        int taille_contenu = strlen(new_content);
+        // si le contenu pointe vers NULL alors on malloc, sinon on realloc
+        cell->content = (cell->content == NULL) ? malloc(taille_contenu * sizeof(char)) : realloc(cell, taille_contenu * sizeof(char));
+        
+        strcpy(cell->content, new_content);
+    }
 }
 
 
