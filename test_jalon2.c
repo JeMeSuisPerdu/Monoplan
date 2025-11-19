@@ -37,7 +37,7 @@ int main() {
     evaluate_cell(cell_A1);
     TEST("Évaluation en cours...\n");
 
-    TEST("RÉSULTAT TEST 1 (A1): %f\n", cell_A1->value);
+    TEST("RÉSULTAT TEST 1 (A1): %.2f\n", cell_A1->value);
     if (cell_A1->value == 15.0) {
         TEST(">>> SUCCÈS (Attendu: 15.0)\n");
     } else {
@@ -163,16 +163,16 @@ int main() {
     TEST("Évaluation en cours...\n");
 
     TEST("RÉSULTAT TEST 6 (A6): %.2f\n", cell_A6->value);
-    if (cell_A6->value == 5.0) {
-        TEST(">>> SUCCÈS (Attendu: 5.0 ) \n");
+    if (cell_A6->value == 0.05) {
+        TEST(">>> SUCCÈS (Attendu: 0.05 ) \n");
     } else {
-        TEST(">>> ÉCHEC (Attendu: 5.0 )\n");
+        TEST(">>> ÉCHEC (Attendu: 0.05 )\n");
     }
     // -----------------------------------------------------------------------------------------------
     //----------------------------- TEST 7 (calcul avec référence vers A1 )---------------------------
     // -----------------------------------------------------------------------------------------------
     
-    TEST("---------------- TEST 7: Calcul avec référence vers A ---------------\n");
+    TEST("---------------- TEST 7: Calcul avec référence vers A1 ---------------\n");
     // crée la cellule B1 (indice 1, 0)
     s_cell* cell_B1 = get_or_create_cell(1, 0);
     
@@ -244,6 +244,53 @@ int main() {
         TEST(">>> ÉCHEC (Attendu: 0.0 )\n");
     }
 
+    // -----------------------------------------------------------------------------------------------
+    // ------------------ TEST 10 : cas où il n'y a qu'une valeur (sans operateur) -------------------
+    // -----------------------------------------------------------------------------------------------
+    
+    TEST("---------------- TEST 10 : Cas où il n'y a qu'une valeur (sans operateur) ---------------\n");
+    s_cell* cell_B4 = get_or_create_cell(1, 3);
+    
+    change_content_cell(cell_B4, "15");
+    
+    TEST("Contenu de B4: %s\n", cell_B4->content);
+
+    analyse_cell(cell_B4);
+    TEST("Analyse... %d tokens trouvés.\n", cell_B4->token_count);
+
+    evaluate_cell(cell_B4);
+    TEST("Évaluation...\n");
+    
+    TEST("RÉSULTAT TEST 10 (B4): %.2f\n", cell_B4->value);
+    if (cell_B4->value == 15.0) {
+        TEST(">>> SUCCÈS (Attendu: 15.0 ) \n");
+    } else {
+        TEST(">>> ÉCHEC (Attendu: 15.0 )\n");
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // ------------------------------ TEST 11 : Le cas obligatoirement faux --------------------------
+    // -----------------------------------------------------------------------------------------------
+    
+    TEST("---------------------- TEST 11 : Le cas obligatoirement faux ---------------------\n");
+    s_cell* cell_B5 = get_or_create_cell(1, 4);
+    
+    change_content_cell(cell_B5, "ex 10 15 -");
+    
+    TEST("Contenu de B5: %s\n", cell_B5->content);
+
+    analyse_cell(cell_B5);
+    TEST("Analyse... %d tokens trouvés.\n", cell_B5->token_count);
+
+    evaluate_cell(cell_B5);
+    TEST("Évaluation...\n");
+    
+    TEST("RÉSULTAT TEST 11 (B5): %.2f\n", cell_B5->value);
+    if (cell_B5->value == 0.0) {
+        TEST(">>> SUCCÈS (Attendu: 0.0 ) \n");
+    } else {
+        TEST(">>> ÉCHEC (Attendu: 0.0 )\n");
+    }
     TEST("------------------------------ LIBERATION DE LA MEMOIRE --------------------------------\n");
 
     // libérer les chaine de caractère, les tokens et les cellules allouées
