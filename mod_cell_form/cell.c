@@ -59,6 +59,9 @@ void analyse_cell(s_cell * cell){
     if (*string == '='){
         // hop on saute le =
         string++; 
+    }else{
+        LOG("ERREUR : Ceci est du texte (pas de '='). Il faut une formule !! Aucune analyse ne sera faite...");
+        return;
     }
 
     while(*string != '\0'){
