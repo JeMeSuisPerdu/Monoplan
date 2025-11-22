@@ -83,5 +83,11 @@ void operator_modulo(my_stack_t* stack);
  */
 void (*find_operator_func(char operator_char))(my_stack_t*);
 
+/**
+ * @brief Fonction trop cool qui libère les cellules dans l'ordre inverse de la création
+ * @return 1 si la libération de la mémoire c'est passé sans problème, sinon 0
+ */
+int free_global_sheet();
+
 
 #endif

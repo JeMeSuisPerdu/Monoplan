@@ -311,22 +311,12 @@ int main() {
     TEST("------------------------------ LIBERATION DE LA MEMOIRE --------------------------------\n");
 
     // libérer les chaine de caractère, les tokens et les cellules allouées
-    free(cell_A1->content);
-    free(cell_A1->tokens);
-    free(cell_A1);
+    if(free_global_sheet()==1){
+        TEST(">>> MEMOIRE LIBERER AVEC SUCCÈS !!!");
 
-    free(cell_A2->content);
-    free(cell_A2->tokens);
-    free(cell_A2);
-
-    free(cell_B1->content);
-    free(cell_B1->tokens);
-    free(cell_B1);
-
-    TEST("Contenu des cellules A1,A2,B1, libérés avec succès.");
-    TEST("Tokens des cellules A1,A2,B1, libérés avec succès.");
-    TEST("Cellules A1,A2,B1, libérés avec succès.");
-    TEST("--------------------------------------------------------------------------------------------\n");
+    }else{
+        TEST(">>> ERREUR : Tentative de vider une feuille de calcul non initialisée ou déjà vide !!");
+    }
     TEST("--------------------------------------- TESTS FINIS ----------------------------------------\n");
     return 0;
 }

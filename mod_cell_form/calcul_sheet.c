@@ -86,3 +86,34 @@ void (*find_operator_func(char operator_char))(my_stack_t*) {
         i++;
     }
 }
+
+int free_global_sheet(){
+    if(global_sheet.cells ==NULL){
+        LOG("ERREUR : tentative de libérer une feuille de calcul vide ou non initialiser !!!");
+        return 0;
+    }
+    // je parcours les lignes + liberation contenu cellule + liberation de la ligne entière
+    for(int i=0; i<global_sheet.lines;i++){
+        if(global_sheet.cells[i] != NULL){
+            for (int j = 0; j < global_sheet.cols; j++)
+            {
+                s_cell * current_cell = global_sheet.cells[i][j];
+                if(current_cell != NULL){
+                    if(current_cell->content != NULL) free(current_cell->content);
+                    if(current_cell->tokens != NULL) free(current_cell->tokens);
+                    free(current_cell);
+                }
+            }
+            
+            free(global_sheet.cells[i]);
+        }
+    }
+    
+    //libère feuille cal
+    free(global_sheet.cells);
+    
+    global_sheet.cells = NULL;
+    global_sheet.lines =0;
+    global_sheet.cols =0;
+    return 1;
+}
